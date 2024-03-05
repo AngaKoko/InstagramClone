@@ -70,7 +70,7 @@ struct ProfileView: View {
                     LazyVGrid(columns: gridItems, spacing: 2){
                         ForEach(0 ... 15, id: \.self){
                             index in
-                            Image("ProfilePic")
+                            Image("bat-man-post-1")
                                 .resizable()
                                 .scaledToFit()
                         }

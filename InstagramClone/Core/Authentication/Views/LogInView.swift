@@ -6,11 +6,15 @@
 //
 
 import SwiftUI
+import FirebaseCore
+import FirebaseFirestore
 
 struct LogInView: View {
     
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject var registrationViewModel = RegistrationViewModel()
+    
+    let db = Firestore.firestore()
+    
     var body: some View {
         NavigationStack {
             VStack{
@@ -24,11 +28,11 @@ struct LogInView: View {
                 
                 //Email Password View
                 VStack{
-                    TextField("Enter your email", text: $email)
+                    TextField("Enter your email", text: $registrationViewModel.email)
                         .autocapitalization(.none)
                         .modifier(IGTextFieldModifier())
                     
-                    SecureField("Enter your Password", text: $password)
+                    SecureField("Enter your Password", text: $registrationViewModel.password)
                         .modifier(IGTextFieldModifier())
                 }
             
@@ -45,6 +49,9 @@ struct LogInView: View {
                 
                 //Log in View
                 Button(action: {
+                    Task{
+                        try await registrationViewModel.logInUser()
+                    }
                     print("Login")
                 }, label: {
                     Text("Login")
@@ -95,7 +102,7 @@ struct LogInView: View {
                 }.padding(.vertical, 16)
 
             }
-        }
+        }.environmentObject(registrationViewModel)
     }
 }
 

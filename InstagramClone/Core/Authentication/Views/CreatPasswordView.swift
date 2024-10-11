@@ -1,5 +1,5 @@
 //
-//  CreateUsernameView.swift
+//  CreatPasswordView.swift
 //  InstagramClone
 //
 //  Created by Anga Koko on 18/09/2024.
@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-struct CreateUsernameView: View {
-    @State private var username = ""
+struct CreatPasswordView: View {
+    @EnvironmentObject var viewModel: RegistrationViewModel
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
         VStack(spacing: 12){
-            Text("Create Username")
+            Text("Create Password")
                 .font(.title2)
                 .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 .padding(.top)
@@ -24,12 +24,12 @@ struct CreateUsernameView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 24)
             
-            TextField("Enter you email", text: $username)
+            SecureField("Enter your password", text: $viewModel.password)
                 .autocapitalization(.none)
                 .modifier(IGTextFieldModifier())
             
             NavigationLink{
-                CreatPasswordView()
+                CompleteSignupView()
                     .navigationBarBackButtonHidden()
             }label: {
                     Text("Next")
@@ -51,5 +51,6 @@ struct CreateUsernameView: View {
 }
 
 #Preview {
-    CreateUsernameView()
+    CreatPasswordView()
+        .environmentObject(RegistrationViewModel())
 }

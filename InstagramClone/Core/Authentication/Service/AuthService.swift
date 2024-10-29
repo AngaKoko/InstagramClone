@@ -29,6 +29,7 @@ class AuthService{
         do{
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
             self.userSession = result.user
+            try await loadUserData()
         }catch{
             print("Failed to sign in with error: \(error.localizedDescription)")
         }
@@ -40,12 +41,13 @@ class AuthService{
         do{
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             self.userSession = result.user
-            await uploadUser(userId: result.user.uid, email: email, username: username)
+            await uploadUser(userId: result.user.uid, email: email, username: username) 
         }catch{
             print("Failed to register user with error: \(error.localizedDescription)")
         }
     }
     
+    @MainActor
     func loadUserData() async throws{
         self.userSession = Auth.auth().currentUser
         guard let currentUid = userSession?.uid else {return}
